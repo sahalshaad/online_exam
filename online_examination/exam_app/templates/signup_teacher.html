@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Signup Teacher</title>
+</head>
+<body>
+    <header>
+        <h1>Signup form for Teacher</h1>
+    </header>
+    <main>
+        <form action="//" method="POST">
+            <label for="name">Name</label>
+            <input type="text" name="name" id="name" placeholder="Enter name" required>
+
+            <label for="department">Department</label>
+                <select name="department" id="department" required>
+                <option value="select_department" disabled selected>select department</option>
+                <option value="social">social</option>
+                <option value="biology">biology</option>
+                <option value="maths">maths</option>
+                </select>
+
+            <label for="phonenumber">Phone Number</label>
+            <input type="number" name="phonenumber" id="phonenumber" placeholder="Enter Roll No" required>
+
+            <label for="username">Username</label>
+            <input type="text" name="username" id="username" placeholder="Enter Username" required>
+
+            <label for="password">Password</label>
+            <input type="password" name="password" id="password" placeholder="Enter Password" required>
+
+            <button>Submit</button>
+        </form>
+    </main>
+</body>
+</html>
