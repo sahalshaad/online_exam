@@ -10,12 +10,13 @@
         <h1>login</h1>
     </header>
     <main>
-        <form action="//" method="POST">
+        <form action="/login_post/" method="POST">
+            {% csrf_token %}
             <label for="username">Username</label>
-            <input type="text" placeholder="Enter Username" required>
+            <input type="text" placeholder="Enter Username" name="username" required>
 
             <label for="password">Password</label>
-            <input type="password" placeholder="Enter Password" required>
+            <input type="password" placeholder="Enter Password" name="password" required>
 
             <button>Submit</button>
         </form>
