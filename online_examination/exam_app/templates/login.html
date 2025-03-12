@@ -1,25 +1,161 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login</title>
+  <style>
+    /* Reset and base styles */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    
+    body {
+      background-color: #f5f5f5;
+      color: #333;
+      line-height: 1.6;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    
+    /* Header styles */
+    header {
+      background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+      color: white;
+      padding: 1.5rem 2rem;
+      text-align: center;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+    
+    header h1 {
+      font-size: 1.8rem;
+      font-weight: 700;
+      text-transform: capitalize;
+    }
+    
+    /* Main content */
+    main {
+      max-width: 450px;
+      width: 90%;
+      margin: 2rem auto;
+      padding: 0 1rem;
+      flex-grow: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    /* Form styles */
+    form {
+      background-color: white;
+      padding: 2.5rem;
+      border-radius: 8px;
+      box-shadow: 0 2px 15px rgba(0, 0, 0, 0.08);
+      width: 100%;
+    }
+    
+    label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: 500;
+      color: #1e3c72;
+    }
+    
+    input {
+      width: 100%;
+      padding: 0.9rem;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      font-size: 1rem;
+      margin-bottom: 1.5rem;
+      transition: border 0.3s ease;
+    }
+    
+    input:focus {
+      outline: none;
+      border-color: #2a5298;
+      box-shadow: 0 0 0 2px rgba(42, 82, 152, 0.2);
+    }
+    
+    input::placeholder {
+      color: #aaa;
+    }
+    
+    button {
+      background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+      color: white;
+      border: none;
+      padding: 1rem;
+      border-radius: 4px;
+      cursor: pointer;
+      font-weight: 500;
+      font-size: 1rem;
+      width: 100%;
+      transition: all 0.3s ease;
+    }
+    
+    button:hover {
+      background: linear-gradient(135deg, #15325f 0%, #224685 100%);
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+    
+    /* Additional login form elements */
+    .form-footer {
+      margin-top: 1.5rem;
+      text-align: center;
+      font-size: 0.9rem;
+    }
+    
+    .form-footer a {
+      color: #1e3c72;
+      text-decoration: none;
+      font-weight: 500;
+    }
+    
+    .form-footer a:hover {
+      text-decoration: underline;
+    }
+    
+    /* Error message styling */
+    .error-message {
+      color: #e74c3c;
+      font-size: 0.9rem;
+      margin-top: -1rem;
+      margin-bottom: 1rem;
+    }
+    
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+      form {
+        padding: 1.5rem;
+      }
+    }
+  </style>
 </head>
 <body>
-    <header>
-        <h1>login</h1>
-    </header>
-    <main>
-        <form action="/login_post/" method="POST">
-            {% csrf_token %}
-            <label for="username">Username</label>
-            <input type="text" placeholder="Enter Username" name="username" required>
-
-            <label for="password">Password</label>
-            <input type="password" placeholder="Enter Password" name="password" required>
-
-            <button>Submit</button>
-        </form>
-    </main>
+  <header>
+    <h1>Login</h1>
+  </header>
+  <main>
+    <form action="/login_post/" method="POST">
+      {% csrf_token %}
+      
+      <label for="username">Username</label>
+      <input type="text" placeholder="Enter Username" name="username" id="username" required>
+      
+      <label for="password">Password</label>
+      <input type="password" placeholder="Enter Password" name="password" id="password" required>
+      
+      <button type="submit">Login</button>
+      
+      <div class="form-footer">
+        <p>Don't have an account? <a href="/signup_student/">Sign Up</a></p>
+      </div>
+    </form>
+  </main>
 </body>
 </html>

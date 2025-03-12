@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Student Profile</title>
+  <style>
+    /* Reset and base styles */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    
+    body {
+      background-color: #f5f5f5;
+      color: #333;
+      line-height: 1.6;
+    }
+    
+    /* Header styles */
+    header {
+      background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+      color: white;
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+    
+    header h1 {
+      font-size: 1.8rem;
+      font-weight: 700;
+    }
+    
+    /* Navigation styles */
+    nav ul {
+      display: flex;
+      list-style: none;
+      align-items: center;
+    }
+    
+    nav ul li {
+      margin-left: 1.5rem;
+    }
+    
+    nav ul li a {
+      color: white;
+      text-decoration: none;
+      font-weight: 500;
+      padding: 0.5rem;
+      transition: all 0.3s ease;
+    }
+    
+    nav ul li a:hover {
+      background-color: rgba(255, 255, 255, 0.1);
+      border-radius: 4px;
+    }
+    
+    .logout-btn {
+      background-color: rgba(255, 255, 255, 0.15);
+      padding: 0.5rem 1rem;
+      border-radius: 4px;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      font-weight: 600;
+      transition: all 0.3s ease;
+    }
+    
+    .logout-btn:hover {
+      background-color: rgba(255, 255, 255, 0.25);
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    }
+    
+    /* Main content */
+    main {
+      max-width: 900px;
+      margin: 2rem auto;
+      padding: 0 1rem;
+    }
+    
+    /* Profile container */
+    .profile-container {
+      display: grid;
+      grid-template-columns: 1fr 2fr;
+      gap: 2rem;
+    }
+    
+    /* Profile card */
+    .profile-card {
+      background-color: white;
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    }
+    
+    .profile-header {
+      background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+      color: white;
+      padding: 2rem 1.5rem;
+      text-align: center;
+    }
+    
+    .profile-avatar {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      background-color: white;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin: 0 auto 1rem;
+      font-size: 3rem;
+      color: #1e3c72;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+    
+    .profile-name {
+      font-size: 1.5rem;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+    }
+    
+    .profile-role {
+      font-size: 1rem;
+      opacity: 0.9;
+    }
+    
+    .profile-details {
+      padding: 1.5rem;
+    }
+    
+    .profile-item {
+      margin-bottom: 1rem;
+    }
+    
+    .profile-label {
+      font-size: 0.9rem;
+      color: #666;
+      margin-bottom: 0.2rem;
+    }
+    
+    .profile-value {
+      font-weight: 500;
+      color: #333;
+    }
+    
+    /* Information panels */
+    .info-panel {
+      background-color: white;
+      border-radius: 8px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+      margin-bottom: 2rem;
+    }
+    
+    .info-header {
+      padding: 1rem 1.5rem;
+      border-bottom: 1px solid #eee;
+    }
+    
+    .info-title {
+      color: #1e3c72;
+      font-size: 1.2rem;
+      font-weight: 600;
+    }
+    
+    .info-content {
+      padding: 1.5rem;
+    }
+    
+    /* Academic record */
+    .academic-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    
+    .academic-table th,
+    .academic-table td {
+      padding: 0.75rem 1rem;
+      text-align: left;
+      border-bottom: 1px solid #eee;
+    }
+    
+    .academic-table th {
+      background-color: #f9f9f9;
+      color: #1e3c72;
+      font-weight: 600;
+    }
+    
+    /* Edit profile button */
+    .edit-profile-btn {
+      display: inline-block;
+      background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+      color: white;
+      border: none;
+      padding: 0.8rem 1.5rem;
+      border-radius: 4px;
+      cursor: pointer;
+      font-weight: 500;
+      font-size: 1rem;
+      margin-top: 1rem;
+      text-decoration: none;
+      transition: all 0.3s ease;
+    }
+    
+    .edit-profile-btn:hover {
+      background: linear-gradient(135deg, #15325f 0%, #224685 100%);
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+    
+    /* Responsive styles */
+    @media (max-width: 768px) {
+      header {
+        flex-direction: column;
+        text-align: center;
+        padding: 1rem;
+      }
+      
+      nav ul {
+        margin-top: 1rem;
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+      
+      nav ul li {
+        margin: 0.5rem;
+      }
+      
+      .profile-container {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div>
+      <h1>ONLINE EXAM</h1>
+    </div>
+    <div>
+      <nav>
+        <ul>
+          <li><a href="#">Home</a></li>
+          <li><a href="#">About</a></li>
+          <li><a href="#">Contact</a></li>
+          <li><a href="#" class="active">Profile</a></li>
+          <li><a href="/login/" class="logout-btn">Logout</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+  
+  <main>
+    <div class="profile-container">
+      <!-- Left Column - Profile Card -->
+      <div class="profile-card">
+        <div class="profile-header">
+          <div class="profile-avatar">👨‍🎓</div>
+          <div class="profile-name">John Doe</div>
+          <div class="profile-role">Class 10 Student</div>
+        </div>
+        <div class="profile-details">
+          <div class="profile-item">
+            <div class="profile-label">Roll Number</div>
+            <div class="profile-value">1022</div>
+          </div>
+          <div class="profile-item">
+            <div class="profile-label">Date of Birth</div>
+            <div class="profile-value">15 March 2008</div>
+          </div>
+          <div class="profile-item">
+            <div class="profile-label">Username</div>
+            <div class="profile-value">john.doe22</div>
+          </div>
+          <div class="profile-item">
+            <div class="profile-label">Email</div>
+            <div class="profile-value">john.doe@example.com</div>
+          </div>
+          <a href="#" class="edit-profile-btn">Edit Profile</a>
+        </div>
+      </div>
+      
+      <!-- Right Column - Information Panels -->
+      <div>
+        <!-- Academic Performance -->
+        <div class="info-panel">
+          <div class="info-header">
+            <div class="info-title">Academic Performance</div>
+          </div>
+          <div class="info-content">
+            <table class="academic-table">
+              <thead>
+                <tr>
+                  <th>Subject</th>
+                  <th>Last Score</th>
+                  <th>Average</th>
+                  <th>Class Rank</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Mathematics</td>
+                  <td>92%</td>
+                  <td>88%</td>
+                  <td>3</td>
+                </tr>
+                <tr>
+                  <td>Science</td>
+                  <td>87%</td>
+                  <td>85%</td>
+                  <td>5</td>
+                </tr>
+                <tr>
+                  <td>English</td>
+                  <td>78%</td>
+                  <td>80%</td>
+                  <td>8</td>
+                </tr>
+                <tr>
+                  <td>Social Studies</td>
+                  <td>84%</td>
+                  <td>82%</td>
+                  <td>6</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        
+        <!-- Upcoming Exams -->
+        <div class="info-panel">
+          <div class="info-header">
+            <div class="info-title">Upcoming Exams</div>
+          </div>
+          <div class="info-content">
+            <table class="academic-table">
+              <thead>
+                <tr>
+                  <th>Subject</th>
+                  <th>Date</th>
+                  <th>Time</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Science Quiz 3</td>
+                  <td>18 March 2025</td>
+                  <td>09:00 AM</td>
+                  <td>Scheduled</td>
+                </tr>
+                <tr>
+                  <td>Mathematics Test</td>
+                  <td>22 March 2025</td>
+                  <td>10:30 AM</td>
+                  <td>Scheduled</td>
+                </tr>
+                <tr>
+                  <td>English Essay</td>
+                  <td>25 March 2025</td>
+                  <td>11:00 AM</td>
+                  <td>Scheduled</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+</body>
+</html>

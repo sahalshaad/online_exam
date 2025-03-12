@@ -91,3 +91,34 @@ def login_post(request):
             return HttpResponse('''<script>alert("Unknown User Type");window.location="/"</script>''')
     else:
         return HttpResponse('''<script>alert("LogIn Failed");window.location="/"</script>''')
+    
+def student_dashboard(request):
+    if 'lid' not in request.session:
+        return HttpResponse('''<script>alert("You need to login first");window.location="/login/"</script>''')
+    
+    try:
+        student = StudentSignup.objects.get(login_id=request.session['lid'])
+    except StudentSignup.DoesNotExist:
+        return HttpResponse('''<script>alert("Student not found");window.location="/login/"</script>''')
+    
+    return render(request, 'student_dashboard.html', {'student': student})
+
+def student_profile(request):
+    profile = StudentSignup.objects.get(login_id = request.session['lid'])
+    print(request.session['lid'])
+    return render (request, 'student_profile.html', {'profile':profile})
+
+from django.shortcuts import render, HttpResponse
+from exam_app.models import TeacherSignup
+
+def teacher_dashboard(request):
+    if 'lid' not in request.session:
+        return HttpResponse('''<script>alert("You need to login first"); window.location="/";</script>''')
+    
+    try:
+        teacher = TeacherSignup.objects.get(login_id=request.session['lid'])
+        # Return a response if the teacher exists
+        return render(request, 'teacher_dashboard.html', {'teacher': teacher})
+    except TeacherSignup.DoesNotExist:
+        # Handle the case where the teacher doesn't exist
+        return HttpResponse('''<script>alert("Invalid login details"); window.location="/";</script>''')

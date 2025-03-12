@@ -1,39 +1,172 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Signup Teacher</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Signup Teacher</title>
+  <style>
+    /* Reset and base styles */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    
+    body {
+      background-color: #f5f5f5;
+      color: #333;
+      line-height: 1.6;
+    }
+    
+    /* Header styles */
+    header {
+      background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+      color: white;
+      padding: 1.5rem 2rem;
+      text-align: center;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+    
+    header h1 {
+      font-size: 1.8rem;
+      font-weight: 700;
+    }
+    
+    /* Main content */
+    main {
+      max-width: 600px;
+      margin: 2rem auto;
+      padding: 0 1rem;
+    }
+    
+    /* Form styles */
+    form {
+      background-color: white;
+      padding: 2rem;
+      border-radius: 8px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    }
+    
+    label {
+      display: block;
+      margin-top: 1rem;
+      margin-bottom: 0.5rem;
+      font-weight: 500;
+      color: #1e3c72;
+    }
+    
+    input, select {
+      width: 100%;
+      padding: 0.8rem;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      font-size: 1rem;
+      transition: border 0.3s ease;
+    }
+    
+    input:focus, select:focus {
+      outline: none;
+      border-color: #2a5298;
+      box-shadow: 0 0 0 2px rgba(42, 82, 152, 0.2);
+    }
+    
+    input::placeholder, select::placeholder {
+      color: #aaa;
+    }
+    
+    button {
+      background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+      color: white;
+      border: none;
+      padding: 0.8rem 1.5rem;
+      border-radius: 4px;
+      cursor: pointer;
+      font-weight: 500;
+      font-size: 1rem;
+      margin-top: 1.5rem;
+      width: 100%;
+      transition: all 0.3s ease;
+    }
+    
+    button:hover {
+      background: linear-gradient(135deg, #15325f 0%, #224685 100%);
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+    
+    /* Form section divider */
+    .form-divider {
+      border-top: 1px solid #eee;
+      margin: 1.5rem 0;
+    }
+    
+    /* Form section heading */
+    .form-section-title {
+      color: #1e3c72;
+      font-size: 1.1rem;
+      margin-bottom: 1rem;
+    }
+    
+    /* Error message styling */
+    .error-message {
+      color: #e74c3c;
+      font-size: 0.9rem;
+      margin-top: 0.3rem;
+    }
+    
+    /* Success message */
+    .success-message {
+      background-color: #d4edda;
+      color: #155724;
+      padding: 1rem;
+      border-radius: 4px;
+      margin-bottom: 1rem;
+      text-align: center;
+    }
+    
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+      form {
+        padding: 1.5rem;
+      }
+    }
+  </style>
 </head>
 <body>
-    <header>
-        <h1>Signup form for Teacher</h1>
-    </header>
-    <main>
-        <form action="/signup_teacher_post/" method="POST">
-            {% csrf_token %}
-            <label for="name">Name</label>
-            <input type="text" name="name" id="name" placeholder="Enter name" required>
-
-            <label for="department">Department</label>
-                <select name="department" id="department" required>
-                <option value="select_department" disabled selected>select department</option>
-                <option value="social">social</option>
-                <option value="biology">biology</option>
-                <option value="maths">maths</option>
-                </select>
-
-            <label for="phonenumber">Phone Number</label>
-            <input type="number" name="phonenumber" id="phonenumber" placeholder="Enter Roll No" required>
-
-            <label for="username">Username</label>
-            <input type="text" name="username" id="username" placeholder="Enter Username" required>
-
-            <label for="password">Password</label>
-            <input type="password" name="password" id="password" placeholder="Enter Password" required>
-
-            <button>Submit</button>
-        </form>
-    </main>
+  <header>
+    <h1>Signup form for Teacher</h1>
+  </header>
+  <main>
+    <form action="/signup_teacher_post/" method="POST">
+      {% csrf_token %}
+      
+      <div class="form-section-title">Personal Information</div>
+      
+      <label for="name">Name</label>
+      <input type="text" name="name" id="name" placeholder="Enter name" required>
+      
+      <label for="department">Department</label>
+      <select name="department" id="department" required>
+        <option value="select_department" disabled selected>Select department</option>
+        <option value="social">Social</option>
+        <option value="biology">Biology</option>
+        <option value="maths">Mathematics</option>
+      </select>
+      
+      <label for="phonenumber">Phone Number</label>
+      <input type="tel" name="phonenumber" id="phonenumber" placeholder="Enter Phone Number" required>
+      
+      <div class="form-divider"></div>
+      <div class="form-section-title">Account Information</div>
+      
+      <label for="username">Username</label>
+      <input type="text" name="username" id="username" placeholder="Enter Username" required>
+      
+      <label for="password">Password</label>
+      <input type="password" name="password" id="password" placeholder="Enter Password" required>
+      
+      <button type="submit">Create Account</button>
+    </form>
+  </main>
 </body>
 </html>
