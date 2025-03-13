@@ -126,7 +126,7 @@ def teacher_dashboard(request):
     except TeacherSignup.DoesNotExist:
         # Handle the case where the teacher doesn't exist
         return HttpResponse('''<script>alert("Invalid login details"); window.location="/";</script>''')
-    
+    x
 def students_list(request):
     student = StudentSignup.objects.all()
     return render (request, 'students_list.html', {'student':student})
