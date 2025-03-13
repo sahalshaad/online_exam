@@ -18,7 +18,7 @@
                     <th>Class</th>
                     <th>Roll No</th>
                     <th>Date of Birth</th>
-                    <th>Action</th>
+                    {% comment %} <th>Action</th> {% endcomment %}
                 </tr>
             </thead>
             <tbody>
@@ -28,7 +28,7 @@
                     <td>{{ student.clas }}</td>
                     <td>{{ student.rollno }}</td>
                     <td>{{ student.dob }}</td>
-                    <td class="text-center">
+                    {% comment %} <td class="text-center">
                         <div class="btn-group" role="group">
                             <a href="{% url 'edit_student' student.id %}" class="btn btn-sm btn-warning me-2" title="Edit">
                                 <i class="fas fa-edit"></i> Edit
@@ -37,7 +37,7 @@
                                 <i class="fas fa-trash"></i> Delete
                             </a>
                         </div>
-                    </td>
+                    </td> {% endcomment %}
                 </tr>
                 {% endfor %}
             </tbody>

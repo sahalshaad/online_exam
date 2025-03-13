@@ -19,6 +19,7 @@ def signup_student_post(request):
     clas = request.POST.get('clas')
     rollno = request.POST.get('rollnumber')
     dob = request.POST.get('dob')
+    image = request.POST.get('photo')
     username = request.POST.get('username')
     password = request.POST.get('password')
 
@@ -39,6 +40,7 @@ def signup_student_post(request):
         username = username,
         password = make_password(password),
         login = student_login,
+        image = image,
     )
     signup.save()
 
@@ -131,3 +133,17 @@ def students_list(request):
     student = StudentSignup.objects.all()
     return render (request, 'students_list.html', {'student':student})
 
+def student_edit(request):
+    student = StudentSignup.objects.get(login_id=request.session['lid'])
+    return render(request, 'student_edit.html',{'student':student})
+
+def student_edit_post(request):
+    edit_student = StudentSignup.objects.get(login_id=request.session['lid'])
+    print(request.session['lid'])
+    edit_student.name = request.POST.get('name', edit_student.name)
+    edit_student.clas = request.POST.get('clas', edit_student.clas)
+    edit_student.rollno = request.POST.get('rollno', edit_student.rollno)
+    edit_student.dob = request.POST.get('dob', edit_student.dob)
+    edit_student.username = request.POST.get('username', edit_student.username)
+    edit_student.save()
+    return HttpResponse('''<script>alert("Edit Successfully");window.location="/student_profile/"</script>''')

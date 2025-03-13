@@ -22,6 +22,7 @@ class StudentSignup(models.Model):
     dob = models.CharField(max_length=100)
     username = models.CharField(max_length=100)
     password = models.CharField(max_length=100)
+    image = models.FileField(upload_to='media/', null=True, blank=True) 
     login = models.ForeignKey(Login, on_delete=models.CASCADE)
 
 class TeacherSignup(models.Model):
@@ -30,4 +31,5 @@ class TeacherSignup(models.Model):
     phonenumber = models.CharField(max_length=100)
     username = models.CharField(max_length=100)
     password = models.CharField(max_length=100)
+    image = models.FileField(upload_to='media/', null=True, blank=True) 
     login = models.ForeignKey(Login, on_delete=models.CASCADE)
