@@ -117,11 +117,17 @@ def teacher_dashboard(request):
     
     try:
         teacher = TeacherSignup.objects.get(login_id=request.session['lid'])
+        student_count = StudentSignup.objects.count()
         # Return a response if the teacher exists
-        return render(request, 'teacher_dashboard.html', {'teacher': teacher})
+        return render(request, 'teacher_dashboard.html', {
+            'teacher': teacher,
+            'count': student_count
+            })
     except TeacherSignup.DoesNotExist:
         # Handle the case where the teacher doesn't exist
         return HttpResponse('''<script>alert("Invalid login details"); window.location="/";</script>''')
     
 def students_list(request):
-    return render (request, 'students_list.html')
+    student = StudentSignup.objects.all()
+    return render (request, 'students_list.html', {'student':student})
+
