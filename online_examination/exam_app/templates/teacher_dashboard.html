@@ -282,19 +282,19 @@
       <div class="profile-img">
         <i class="fas fa-user"></i>
       </div>
-      <h2>Dr. Sarah Johnson</h2>
-      <p>Mathematics Department</p>
+      <h2>{{teacher.name}}</h2>
+      <p>{{teacher.department}}</p>
     </div>
     
     <ul class="nav-menu">
       <li class="nav-item">
         <a href="#" class="nav-link active">
           <i class="fas fa-home"></i>
-          <span>Dashboard</span>
+          <span>Home</span>
         </a>
       </li>
       <li class="nav-item">
-        <a href="#" class="nav-link">
+        <a href="/students_list/" class="nav-link">
           <i class="fas fa-users"></i>
           <span>My Students</span>
         </a>
@@ -342,7 +342,7 @@
   <div class="main-content">
     <div class="header">
       <h1>Teacher Dashboard</h1>
-      <a href="#" class="logout-btn">
+      <a href="/login/" class="logout-btn">
         <i class="fas fa-sign-out-alt"></i> Logout
       </a>
     </div>
