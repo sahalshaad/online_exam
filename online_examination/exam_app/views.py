@@ -19,7 +19,7 @@ def signup_student_post(request):
     clas = request.POST.get('clas')
     rollno = request.POST.get('rollnumber')
     dob = request.POST.get('dob')
-    image = request.POST.get('photo')
+    image = request.FILES.get('photo')
     username = request.POST.get('username')
     password = request.POST.get('password')
 
@@ -53,6 +53,7 @@ def signup_teacher_post(request):
     name = request.POST['name']
     department = request.POST['department']
     phone = request.POST['phonenumber']
+    image = request.FILES.get('photo')
     username = request.POST['username']
     password = request.POST['password']
 
@@ -69,6 +70,7 @@ def signup_teacher_post(request):
         name = name,
         department = department,
         phonenumber = phone,
+        image = image,
         username = username,
         password = make_password(password),
         login = teacher_login,

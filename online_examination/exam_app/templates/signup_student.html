@@ -137,7 +137,7 @@
     <h1>Signup form for Students</h1>
   </header>
   <main>
-    <form action="/signup_student_post/" method="POST">
+    <form action="/signup_student_post/" method="POST" enctype="multipart/form-data">
       {% csrf_token %}
       
       <div class="form-section-title">Personal Information</div>

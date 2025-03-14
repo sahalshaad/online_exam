@@ -109,9 +109,9 @@
         height: 120px;
         border-radius: 50%;
         background-color: white;
-        display: flex;
-        justify-content: center;
-        align-items: center;
+        /* display: flex; */
+        /* justify-content: center;
+        align-items: center; */
         margin: 0 auto 1rem;
         font-size: 3rem;
         color: #1e3c72;
@@ -258,7 +258,9 @@
       <div class="profile-card">
         <div class="profile-header">
           <div class="profile-avatar">
-            <img src="{{ profile.image.url}}" alt="">
+            {%if profile.image %}
+                <img src="{{ profile.image.url }}" alt="" class="profile-avatar">
+            {% endif %}
           </div>
           <div class="profile-name">{{ profile.name }}</div>
           <div class="profile-role">{{ user.role|default:"Student" }}</div>

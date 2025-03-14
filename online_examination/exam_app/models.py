@@ -22,7 +22,7 @@ class StudentSignup(models.Model):
     dob = models.CharField(max_length=100)
     username = models.CharField(max_length=100)
     password = models.CharField(max_length=100)
-    image = models.FileField(upload_to='media/', null=True, blank=True) 
+    image = models.FileField(upload_to='image/', null=True, blank=True) 
     login = models.ForeignKey(Login, on_delete=models.CASCADE)
 
 class TeacherSignup(models.Model):
@@ -33,3 +33,9 @@ class TeacherSignup(models.Model):
     password = models.CharField(max_length=100)
     image = models.FileField(upload_to='media/', null=True, blank=True) 
     login = models.ForeignKey(Login, on_delete=models.CASCADE)
+    
+class ExamModel (models.Model):
+    title = models.CharField(max_length=100)
+    subject = models.CharField(max_length=100)
+    total_mark = models.IntegerField()
+    duration = models.CharField(max_length=50)
