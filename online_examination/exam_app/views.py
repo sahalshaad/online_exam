@@ -150,20 +150,20 @@ def student_edit_post(request):
     edit_student.save()
     return HttpResponse('''<script>alert("Edit Successfully");window.location="/student_profile/"</script>''')
 
-def upload_exam(request):
-    return render (request, 'upload_exam.html')
+
 
 
 def add_exam(request):
     return render (request, 'add_exam.html')
 
 def add_exam_post(request):
-    date = request.POST.get('date')
-    title = request.POST.get('examTitle')
-    subject = request.POST.get('subject')
-    ttmark = request.POST.get('totalMark')
-    duration1 = request.POST.get('duration1')
-    duration2 = request.POST.get('duration2')
+    print(request.POST)
+    date = request.POST['date']
+    title = request.POST['examTitle']
+    subject = request.POST['subject']
+    ttmark = request.POST['totalMark']
+    duration1 = request.POST['duration1']
+    duration2 = request.POST['duration2']
     exam = ExamModel(
         date = date,
         title = title,
@@ -173,7 +173,15 @@ def add_exam_post(request):
         duration2 = duration2,
     )
     exam.save()
-    return HttpResponse('''<script>alert("success full");window.location=//</script>''')
+    return HttpResponse('''<script>alert("success full");window.location=/upload_exam/</script>''')
+
+def upload_exam(request, exam_id=None):
+    if exam_id:
+        exam = ExamModel.objects.get(id=exam_id)
+        return render(request, 'upload_exam.html', {'exam': exam})
+    else:
+        exams = ExamModel.objects.all()
+        return render(request, 'upload_exam.html', {'exams': exams})
 
 def upload_exam_post(request):
     title = request.POST['title']
@@ -183,7 +191,31 @@ def upload_exam_post(request):
     option3 = request.POST['option3']
     option4 = request.POST['option4']
     answer = request.POST['answer']
-    questions = QuestionModel()
     
+    # Option 1: If you're sending the exam ID in the form, use that instead of title
+    # Add a hidden input field with the exam ID in your form
+    exam_id = request.POST.get('exam_id')
+    if exam_id:
+        exam = ExamModel.objects.get(id=exam_id)
+    else:
+        # Option 2: If you must use title, handle multiple results
+        try:
+            exam = ExamModel.objects.filter(title=title).first()
+            if not exam:
+                return HttpResponse("<script>alert('Exam not found!');window.history.back();</script>")
+        except Exception as e:
+            return HttpResponse(f"<script>alert('Error: {str(e)}');window.history.back();</script>")
     
+    questions = QuestionModel(
+        exam=exam,
+        question=question,
+        option1=option1,
+        option2=option2,
+        option3=option3,
+        option4=option4,
+        answer=answer,
+    )
+    questions.save()
     
+    # Redirect back to the same exam page
+    return HttpResponse(f'''<script>alert("Successfully added question!");window.location="/upload_exam/{exam.id}/";</script>''')

@@ -4,95 +4,124 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Sample Page</title>
-
+    <title>Upload Exam</title>
     <!-- Bootstrap CSS -->
-    <link 
-        href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" 
-        rel="stylesheet" 
+    <link
+        href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+        rel="stylesheet"
     />
-    
     <!-- FontAwesome -->
-    <link 
-        rel="stylesheet" 
-        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" 
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
     />
-
-    <!-- Custom CSS (Optional) -->
+    <!-- Custom CSS -->
     <style>
         body {
             padding: 20px;
             background-color: #eef2f4;
         }
-     
+        .form-container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
     </style>
 </head>
 <body>
-
     <div class="container">
-        <h1 class="text-center">Upload exam</h1>
+        <h1 class="text-center mb-4">Upload Exam</h1>
         
-        <div class="row d-flex justify-content-between">
-            <!-- Form on the left side -->
-            <div class="col-md-5">
-                <form action="//" method="POST">
-                    <div class="form-group">
-                        <label for="title">Exam Title</label>
-                        <input class="mb-3 form-control" type="text" placeholder="Enter exam title" name="title">
-                    </div>
-        
-                    <div class="form-group">
-                        <label for="question">Question</label>
-                        <input class="mb-3 form-control" type="text" placeholder="Enter question" name="question">
-                    </div>
-        
-                    <div class="form-group">
-                        <label for="option1">Option 1</label>
-                        <input type="text" class="mb-3 form-control" placeholder="Enter 1st option" name="option1">
-                    </div>
-        
-                    <div class="form-group">
-                        <label for="option2">Option 2</label>
-                        <input class="mb-3 form-control" type="text" placeholder="Enter 2nd option" name="option2">
-                    </div>
-        
-                    <div class="form-group">
-                        <label for="option3">Option 3</label>
-                        <input class="mb-3 form-control" type="text" placeholder="Enter 3rd option" name="option3">
-                    </div>
-        
-                    <div class="form-group">
-                        <label for="option4">Option 4</label>
-                        <input class="mb-3 form-control" type="text" placeholder="Enter 4th option" name="option4">
-                    </div>
-        
-                    <div class="form-group">
-                        <label for="answer">Answer</label>
-                        <input class="mb-3 form-control" type="text" placeholder="Correct answer" name="answer">
-                    </div>
-        
-                    <button class="btn btn-success">Submit</button>
-                </form>
+        {% if exam %}
+            <!-- Form when a specific exam is selected -->
+            <div class="row d-flex justify-content-between">
+                <!-- Form on the left side -->
+                <div class="col-md-5 form-container">
+                    <h2 class="text-center mb-4">Upload Questions for "{{ exam.title }}"</h2>
+                    <form action="/upload_exam_post/" method="POST">
+                        {% csrf_token %}
+                        <div class="form-group">
+                            <label for="title">Exam Title</label>
+                            <input type="hidden" name="exam_id" value="{{ exam.id }}">
+                            <input type="hidden" name="title" value="{{ exam.title }}">
+                            <input type="text" class="form-control" value="{{ exam.title }}" disabled>
+                        </div>
+                        <div class="form-group">
+                            <label for="question">Question</label>
+                            <input class="form-control" type="text" placeholder="Enter question" name="question" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="option1">Option 1</label>
+                            <input type="text" class="form-control" placeholder="Enter 1st option" name="option1" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="option2">Option 2</label>
+                            <input class="form-control" type="text" placeholder="Enter 2nd option" name="option2" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="option3">Option 3</label>
+                            <input class="form-control" type="text" placeholder="Enter 3rd option" name="option3" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="option4">Option 4</label>
+                            <input class="form-control" type="text" placeholder="Enter 4th option" name="option4" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="answer">Answer</label>
+                            <select class="form-control" name="answer" required>
+                                <option value="">Select correct answer</option>
+                                <option value="option1">Option 1</option>
+                                <option value="option2">Option 2</option>
+                                <option value="option3">Option 3</option>
+                                <option value="option4">Option 4</option>
+                            </select>
+                        </div>
+                        <div class="text-center">
+                            <button type="submit" class="btn btn-success">Submit</button>
+                            <a href="/upload_exam/" class="btn btn-secondary ml-2">Back to List</a>
+                        </div>
+                    </form>
+                </div>
+                <!-- Image on the right side -->
+                <div class="col-md-6 d-flex justify-content-end align-items-center">
+                    <img src="{% static 'img/school.png' %}" alt="School image" class="img-fluid">
+                </div>
             </div>
-        
-            <!-- Image on the right side -->
-            <div class="col-md-6 d-flex justify-content-end align-items-center">
-                <img src="{% static 'img/school.png' %}" alt="My image" class="img-fluid">
+        {% else %}
+            <!-- Display list of exams to select from -->
+            <div class="row">
+                <div class="col-md-8 mx-auto form-container">
+                    <h2 class="text-center mb-4">Select an Exam</h2>
+                    <div class="list-group">
+                        {% for exam in exams %}
+                            <a href="/upload_exam/{{ exam.id }}/" class="list-group-item list-group-item-action">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <strong>{{ exam.title }}</strong> - {{ exam.subject }}
+                                    </div>
+                                    <span class="badge badge-primary badge-pill">{{ exam.date }}</span>
+                                </div>
+                            </a>
+                        {% empty %}
+                            <div class="alert alert-info">
+                                No exams found. Please <a href="/add_exam/">add an exam</a> first.
+                            </div>
+                        {% endfor %}
+                    </div>
+                    <div class="text-center mt-4">
+                        <a href="/add_exam/" class="btn btn-primary">
+                            <i class="fas fa-plus"></i> Add New Exam
+                        </a>
+                    </div>
+                </div>
             </div>
-        </div>        
+        {% endif %}
     </div>
-    
 
-<!-- Bootstrap JS, Popper.js, and jQuery -->
-<script 
-    src="https://code.jquery.com/jquery-3.5.1.min.js">
-</script>
-<script 
-    src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.4.4/dist/umd/popper.min.js">
-</script>
-<script 
-    src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js">
-</script>
-
+    <!-- Bootstrap JS, Popper.js, and jQuery -->
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.4.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>
