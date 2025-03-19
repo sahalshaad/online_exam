@@ -2,7 +2,7 @@ from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.urls import reverse
 from django.contrib.auth.hashers import make_password, check_password
-from .models import Login, StudentSignup, TeacherSignup
+from .models import ExamModel, Login, QuestionModel, StudentSignup, TeacherSignup
 
 def index(request):
     return render(request, 'index.html')
@@ -149,3 +149,41 @@ def student_edit_post(request):
     edit_student.username = request.POST.get('username', edit_student.username)
     edit_student.save()
     return HttpResponse('''<script>alert("Edit Successfully");window.location="/student_profile/"</script>''')
+
+def upload_exam(request):
+    return render (request, 'upload_exam.html')
+
+
+def add_exam(request):
+    return render (request, 'add_exam.html')
+
+def add_exam_post(request):
+    date = request.POST.get('date')
+    title = request.POST.get('examTitle')
+    subject = request.POST.get('subject')
+    ttmark = request.POST.get('totalMark')
+    duration1 = request.POST.get('duration1')
+    duration2 = request.POST.get('duration2')
+    exam = ExamModel(
+        date = date,
+        title = title,
+        subject = subject,
+        total_mark = ttmark,
+        duration1 = duration1,
+        duration2 = duration2,
+    )
+    exam.save()
+    return HttpResponse('''<script>alert("success full");window.location=//</script>''')
+
+def upload_exam_post(request):
+    title = request.POST['title']
+    question = request.POST['question']
+    option1 = request.POST['option1']
+    option2 = request.POST['option2']
+    option3 = request.POST['option3']
+    option4 = request.POST['option4']
+    answer = request.POST['answer']
+    questions = QuestionModel()
+    
+    
+    
