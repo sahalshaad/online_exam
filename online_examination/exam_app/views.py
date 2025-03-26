@@ -2,7 +2,9 @@ from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.urls import reverse
 from django.contrib.auth.hashers import make_password, check_password
-from .models import ExamModel, Login, QuestionModel, StudentSignup, TeacherSignup
+from .models import ExamModel, ExamResult, Login, QuestionModel, StudentAnswer, StudentSignup, TeacherSignup
+from django.utils import timezone
+from django.contrib.auth.decorators import login_required
 
 def index(request):
     return render(request, 'index.html')
@@ -219,3 +221,97 @@ def upload_exam_post(request):
     
     # Redirect back to the same exam page
     return HttpResponse(f'''<script>alert("Successfully added question!");window.location="/upload_exam/{exam.id}/";</script>''')
+
+def all_exam(request):
+    exam = ExamModel.objects.all()
+    return render (request, 'all_exam.html', {'exam':exam})
+
+def todays_exam(request):
+    today = timezone.now().date()
+    todays_exam = ExamModel.objects.filter(date=today)
+    return render (request, 'today_exam.html', {'todays_exam':todays_exam})
+
+def studyMeteriel(request):
+    return render (request, 'studyMeteriel.html')
+
+@login_required
+def question_paper(request):
+    # Fetch all exams and questions
+    exams = ExamModel.objects.all()
+    questions = QuestionModel.objects.all()
+
+    # Pass data to the template
+    context = {
+        'exams': exams,
+        'questions': questions,
+    }
+    return render(request, 'question_paper.html', context)
+
+
+
+
+
+@login_required
+def submit_answers(request):
+    if request.method == 'POST':
+        # Initialize score and total questions
+        score = 0
+        total_questions = 0
+
+        # Get the logged-in student
+        student = request.user
+
+        # Get the exam (assuming the exam ID is passed in the form)
+        exam_id = request.POST.get('exam_id')
+        exam = ExamModel.objects.get(id=exam_id)
+
+        # Loop through the submitted form data
+        for key, value in request.POST.items():
+            # Check if the key is a question (e.g., "question1", "question2", etc.)
+            if key.startswith('question'):
+                total_questions += 1
+
+                # Extract the question ID from the key (e.g., "question1" -> 1)
+                question_id = key.replace('question', '')
+
+                try:
+                    # Fetch the question from the database
+                    question = QuestionModel.objects.get(id=question_id)
+
+                    # Check if the submitted answer is correct
+                    is_correct = (value == question.answer)
+                    if is_correct:
+                        score += 1
+
+                    # Save the student's answer to the database
+                    StudentAnswer.objects.create(
+                        student=student,
+                        question=question,
+                        submitted_answer=value,
+                        is_correct=is_correct,
+                    )
+                except QuestionModel.DoesNotExist:
+                    # Handle the case where the question does not exist
+                    return HttpResponse(f"Error: Question with ID {question_id} not found.")
+
+        # Calculate the percentage score
+        percentage_score = (score / total_questions) * 100 if total_questions > 0 else 0
+
+        # Save the exam result to the database
+        ExamResult.objects.create(
+            student=student,
+            exam=exam,
+            score=score,
+            total_questions=total_questions,
+            percentage_score=percentage_score,
+        )
+
+        # Render a results page or return a response with the score
+        return render(request, 'results.html', {
+            'score': score,
+            'total_questions': total_questions,
+            'percentage_score': percentage_score,
+        })
+    else:
+        # If the request is not a POST, redirect to the question paper page
+        return redirect('question_paper')

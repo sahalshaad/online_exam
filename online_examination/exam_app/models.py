@@ -2,6 +2,8 @@ from django.db import models
 from django.contrib.auth.hashers import make_password, check_password
 import datetime
 
+from django.contrib.auth.models import User
+
 class Login(models.Model):
     username = models.CharField(max_length=100, unique=True)
     password = models.CharField(max_length=100)
@@ -42,6 +44,7 @@ class ExamModel(models.Model):
     total_mark = models.IntegerField()
     duration1 = models.CharField(max_length=50)
     duration2 = models.CharField(max_length=50)
+    status = models.CharField(max_length=100)
 
     def __str__(self):
         return self.title
@@ -64,3 +67,30 @@ class QuestionModel(models.Model):
 
     def __str__(self):
         return self.question
+    
+    
+    
+    
+    
+    
+class StudentAnswer(models.Model):
+    student = models.ForeignKey(User, on_delete=models.CASCADE)  # Link to the logged-in student
+    question = models.ForeignKey(QuestionModel, on_delete=models.CASCADE)  # Link to the question
+    submitted_answer = models.CharField(max_length=1)  # Store the submitted answer (a, b, c, d)
+    is_correct = models.BooleanField(default=False)  # Indicates if the answer is correct
+
+    def __str__(self):
+        return f"{self.student.username} - {self.question.question}"
+    
+    
+    
+class ExamResult(models.Model):
+    student = models.ForeignKey(User, on_delete=models.CASCADE)  # Link to the logged-in student
+    exam = models.ForeignKey(ExamModel, on_delete=models.CASCADE)  # Link to the exam
+    score = models.IntegerField()  # Store the total score
+    total_questions = models.IntegerField()  # Store the total number of questions
+    percentage_score = models.FloatField()  # Store the percentage score
+    submitted_at = models.DateTimeField(auto_now_add=True)  # Timestamp of submission
+
+    def __str__(self):
+        return f"{self.student.username} - {self.exam.title} - {self.percentage_score}%"

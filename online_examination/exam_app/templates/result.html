@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Exam Results</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      line-height: 1.6;
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+      background-color: #f5f5f5;
+    }
+    h1 {
+      color: #2c3e50;
+      text-align: center;
+      padding-bottom: 10px;
+      border-bottom: 2px solid #3498db;
+    }
+    .results {
+      background-color: white;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      text-align: center;
+    }
+    .score {
+      font-size: 24px;
+      font-weight: bold;
+      color: #3498db;
+    }
+    .percentage {
+      font-size: 20px;
+      color: #2c3e50;
+    }
+    a {
+      display: inline-block;
+      margin-top: 20px;
+      padding: 10px 20px;
+      background-color: #3498db;
+      color: white;
+      text-decoration: none;
+      border-radius: 4px;
+    }
+    a:hover {
+      background-color: #2980b9;
+    }
+  </style>
+</head>
+<body>
+  <h1>Exam Results</h1>
+  <div class="results">
+    <p class="score">Your Score: {{ score }} / {{ total_questions }}</p>
+    <p class="percentage">Percentage: {{ percentage_score|floatformat:2 }}%</p>
+    <a href="{% url 'question_paper' %}">Back to Exam</a>
+  </div>
+</body>
+</html>

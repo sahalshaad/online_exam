@@ -18,12 +18,16 @@ urlpatterns = [
     path('student_edit/', views.student_edit, name='student_edit'),
     path('student_edit_post/', views.student_edit_post, name='student_edit_post'),
     
-
-    
     path('add_exam/', views.add_exam, name='add_exam'),
     path('add_exam_post/', views.add_exam_post, name='add_exam_post'),
     path('upload_exam_post/', views.upload_exam_post, name='upload_exam_post'),
     
     path('upload_exam/', views.upload_exam, name='upload_exam'),
     path('upload_exam/<int:exam_id>/', views.upload_exam, name='upload_exam_with_id'),
+    
+    path('all_exam/', views.all_exam, name='all_exam'),
+    path('todays_exam/', views.todays_exam, name='todays_exam'),
+    path('studyMeteriel/', views.studyMeteriel, name='studyMeteriel'),
+    path('question_paper/', views.question_paper, name='question_paper'),
+    path('submit_answers/', views.submit_answers, name='submit_answers'),
 ]

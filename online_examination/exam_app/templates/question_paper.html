@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Biology Exam Paper</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      line-height: 1.6;
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+      background-color: #f5f5f5;
+    }
+    h1 {
+      color: #2c3e50;
+      text-align: center;
+      padding-bottom: 10px;
+      border-bottom: 2px solid #3498db;
+    }
+    h3 {
+      color: #2c3e50;
+      margin-top: 20px;
+    }
+    form {
+      background-color: white;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    .question-container {
+      margin-bottom: 25px;
+      padding-bottom: 15px;
+      border-bottom: 1px solid #eee;
+    }
+    .question-number {
+      font-weight: bold;
+      color: #3498db;
+    }
+    .question-text {
+      display: block;
+      margin: 10px 0;
+      font-weight: bold;
+    }
+    .radio-options {
+      margin-left: 20px;
+    }
+    .radio-container {
+      display: block;
+      margin: 8px 0;
+      padding: 5px;
+    }
+    .radio-container:hover {
+      background-color: #f9f9f9;
+      border-radius: 4px;
+    }
+    input[type="radio"] {
+      margin-right: 10px;
+      transform: scale(1.2);
+    }
+    label {
+      cursor: pointer;
+    }
+    button {
+      background-color: #3498db;
+      color: white;
+      border: none;
+      padding: 12px 20px;
+      font-size: 16px;
+      border-radius: 4px;
+      cursor: pointer;
+      display: block;
+      margin: 30px auto 0;
+    }
+    button:hover {
+      background-color: #2980b9;
+    }
+  </style>
+</head>
+<body>
+  <h1>Examination</h1>
+  <h3>{{ exam.title }}</h3>
+  
+  <form action="{% url 'submit_answers' %}" method="POST">
+    {% csrf_token %}
+    <input type="hidden" name="exam_id" value="{{ exam.id }}">
+    
+    {% for question in questions %}
+    <div class="question-container">
+      <span class="question-text">
+        <span class="question-number">{{ forloop.counter }}.</span>
+        {{ question.question }}
+      </span>
+      <div class="radio-options">
+        <div class="radio-container">
+          <input type="radio" id="q{{ forloop.counter }}a" name="question{{ question.id }}" value="a" required>
+          <label for="q{{ forloop.counter }}a">(a) {{ question.option1 }}</label>
+        </div>
+        <div class="radio-container">
+          <input type="radio" id="q{{ forloop.counter }}b" name="question{{ question.id }}" value="b">
+          <label for="q{{ forloop.counter }}b">(b) {{ question.option2 }}</label>
+        </div>
+        <div class="radio-container">
+          <input type="radio" id="q{{ forloop.counter }}c" name="question{{ question.id }}" value="c">
+          <label for="q{{ forloop.counter }}c">(c) {{ question.option3 }}</label>
+        </div>
+        <div class="radio-container">
+          <input type="radio" id="q{{ forloop.counter }}d" name="question{{ question.id }}" value="d">
+          <label for="q{{ forloop.counter }}d">(d) {{ question.option4 }}</label>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+    
+    <button type="submit">Submit Answers</button>
+  </form>
+</body>
+</html>
