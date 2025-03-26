@@ -28,6 +28,7 @@ urlpatterns = [
     path('all_exam/', views.all_exam, name='all_exam'),
     path('todays_exam/', views.todays_exam, name='todays_exam'),
     path('studyMeteriel/', views.studyMeteriel, name='studyMeteriel'),
-    path('question_paper/', views.question_paper, name='question_paper'),
+    path('question_paper/<int:exam_id>/', views.question_paper, name='question_paper'),
     path('submit_answers/', views.submit_answers, name='submit_answers'),
+    path('exam/review/<int:exam_id>/', views.exam_review, name='exam_review'),
 ]
