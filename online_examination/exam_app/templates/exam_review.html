@@ -14,8 +14,13 @@
             <div class="list-group-item {% if answer.is_correct %}list-group-item-success{% else %}list-group-item-danger{% endif %}">
                 <h5>Question: {{ answer.question.question }}</h5>
                 <p>Your answer: {{ answer.submitted_answer }}</p>
-                <p>Correct answer: {{ answer.question.answer }}</p>
+                <p>Correct answer: {{ answer.question.answer|default:"No answer provided" }}</p>
+                <p>Question ID: {{ answer.question.id }}</p>  <!-- Debugging info -->
                 <p>{% if answer.is_correct %}✓ Correct{% else %}✗ Incorrect{% endif %}</p>
+            </div>
+            {% empty %}
+            <div class="list-group-item">
+                <p>No answers found for this exam.</p>
             </div>
             {% endfor %}
         </div>

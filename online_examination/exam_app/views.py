@@ -3,7 +3,7 @@ from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, render, redirect
 from django.urls import reverse
 from django.contrib.auth.hashers import make_password, check_password
-from .models import ExamModel, ExamResult, Login, QuestionModel, StudentAnswer, StudentSignup, TeacherSignup
+from .models import *
 from django.utils import timezone
 from django.contrib.auth.decorators import login_required
 
@@ -234,105 +234,3 @@ def todays_exam(request):
 
 def studyMeteriel(request):
     return render (request, 'studyMeteriel.html')
-
-@login_required
-def question_paper(request, exam_id):
-    # Get the specific exam
-    exam = ExamModel.objects.get(id=exam_id)
-    # Get questions for this exam only
-    questions = QuestionModel.objects.filter(exam=exam)
-
-    # Pass data to the template
-    context = {
-        'exam': exam,
-        'questions': questions,
-    }
-    return render(request, 'question_paper.html', context)
-
-
-
-@login_required
-def submit_answers(request):
-    if request.method != 'POST':
-        return redirect('question_paper')
-
-    try:
-        student = request.user
-        exam_id = request.POST.get('exam_id')
-        
-        if not exam_id:
-            return HttpResponse("Exam ID is missing", status=400)
-            
-        exam = ExamModel.objects.get(id=exam_id)
-        questions = QuestionModel.objects.filter(exam=exam)
-        total_questions = questions.count()
-        score = 0
-
-        # Create a dictionary to store question-answer pairs for validation
-        submitted_answers = {}
-        for key, value in request.POST.items():
-            if key.startswith('question_'):
-                question_id = key.replace('question_', '')
-                submitted_answers[question_id] = value
-
-        # Process each question and check answers
-        for question in questions:
-            submitted_answer = submitted_answers.get(str(question.id))
-            if not submitted_answer:
-                continue  # Skip if no answer was submitted for this question
-
-            is_correct = (submitted_answer.lower() == question.answer.lower())
-            if is_correct:
-                score += 1
-
-            # Save student's answer
-            StudentAnswer.objects.create(
-                student=student,
-                question=question,
-                submitted_answer=submitted_answer,
-                is_correct=is_correct,
-            )
-
-        # Calculate percentage (with protection against division by zero)
-        percentage_score = (score / total_questions) * 100 if total_questions > 0 else 0
-
-        # Save the exam result
-        ExamResult.objects.create(
-            student=student,
-            exam=exam,
-            score=score,
-            total_questions=total_questions,
-            percentage_score=percentage_score,
-        )
-
-        # Prepare context for template
-        context = {
-            'score': score,
-            'total_questions': total_questions,
-            'percentage_score': percentage_score,
-            'exam': exam,
-            'student': student,
-        }
-
-        return render(request, 'results.html', context)
-
-    except ExamModel.DoesNotExist:
-        return HttpResponse("Exam not found", status=404)
-    except Exception as e:
-        logger.error(f"Error submitting answers: {str(e)}")  # Consider adding logging
-        return HttpResponse(f"An error occurred: {str(e)}", status=500)
-    
-    
-    
-@login_required
-def exam_review(request, exam_id):
-    exam = get_object_or_404(ExamModel, id=exam_id)
-    student_answers = StudentAnswer.objects.filter(
-        student=request.user,
-        question__exam=exam
-    ).select_related('question')
-    
-    return render(request, 'exam_review.html', {
-        'exam': exam,
-        'student_answers': student_answers,
-    })
